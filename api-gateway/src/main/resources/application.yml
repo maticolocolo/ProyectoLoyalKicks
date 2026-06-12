@@ -1,0 +1,101 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+
+      # --- CORS GLOBAL ---
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:8080"   # Swagger del gateway
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+
+      routes:
+
+        # ─────────────────────────────────────────
+        # SERVICIO: sevice-producto  →  :8081
+        # ─────────────────────────────────────────
+        - id: service-producto
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/productos/**, /api/v1/marcas/**, /api/v1/tipos/**
+
+        - id: service-producto-docs
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/productos/v3/api-docs
+        
+        - id: service-inventario
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/inventario/**
+        
+        - id: service-inventario-docs
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/inventario/v3/api-docs
+
+        - id: service-pedido
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/pedidos/**
+
+        - id: service-pedido-docs
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/pedidos/v3/api-docs
+        # ─────────────────────────────────────────
+        # SERVICIO: servicio-dos  →  :8082  (ejemplo)
+        # Descomenta y ajusta cuando lo agregues
+        # ─────────────────────────────────────────
+        # - id: servicio-dos
+        #   uri: http://localhost:8082
+        #   predicates:
+        #     - Path=/api/v1/pedidos/**, /api/v1/otro/**
+        #
+        # - id: servicio-dos-docs
+        #   uri: http://localhost:8082
+        #   predicates:
+        #     - Path=/api/v1/pedidos/v3/api-docs
+
+# Eureka deshabilitado (URLs directas)
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+# --- SWAGGER AGREGADO (un solo UI para todos los servicios) ---
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Servicio Producto
+        url: /api/v1/productos/v3/api-docs
+      - name: Servicio Inventario
+        url: /api/v1/inventario/v3/api-docs
+      - name: Servicio Pedido
+        url: /api/v1/pedidos/v3/api-docs
+      # Agrega aquí cada nuevo servicio:
+      # - name: Servicio Dos
+      #   url: /api/v1/pedidos/v3/api-docs
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway, health, info
+
+#Es evidente que le pedi ayuda a la ia para que no tenga errores y me diera una guia de como cambiarlo mas adelante 

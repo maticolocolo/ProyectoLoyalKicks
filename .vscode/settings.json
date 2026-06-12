@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+{
+    "java.configuration.updateBuildConfiguration": "interactive"
+<<<<<<< HEAD
+=======
+    
+>>>>>>> ec91550 (cambios sobre swagger)
+=======
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "disabled"
+>>>>>>> 3ce6f1f (Recreacion de microservicios)
+}
