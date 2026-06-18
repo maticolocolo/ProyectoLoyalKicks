@@ -12,14 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.DeleteExchange;
-
 import com.loyalkicksproyect.service_cliente.model.Cliente;
 import com.loyalkicksproyect.service_cliente.service.ClienteService;
 
 
 @RestController
-@RequestMapping("api/v1/Cliente")
+@RequestMapping("/api/v1/cliente")
 public class ClienteController 
 {
     @Autowired
