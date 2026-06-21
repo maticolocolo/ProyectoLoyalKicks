@@ -15,7 +15,7 @@ import com.loyalkicksproyect.sevice_producto.model.Tipo;
 import com.loyalkicksproyect.sevice_producto.service.TipoService;
 
 @RestController
-@RequestMapping("/api/v1/Tipo")
+@RequestMapping("/api/v1/tipos")
 public class TipoController 
 {
     

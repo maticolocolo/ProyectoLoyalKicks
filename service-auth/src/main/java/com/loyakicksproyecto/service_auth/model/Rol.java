@@ -28,6 +28,6 @@ public class Rol
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "nombre-rol", unique = true, nullable = false)
+    @Column(name = "nombre_rol", unique = true, nullable = false)
     private String nombreRol;
 }

@@ -13,7 +13,7 @@ import com.loyalkicksproyect.service_inventario.model.Inventario;
 import com.loyalkicksproyect.service_inventario.service.InventarioService;
 
 @RestController
-@RequestMapping("/api/v1/Inventario")
+@RequestMapping("/api/v1/inventario")
 public class InventarioController 
 {
     @Autowired

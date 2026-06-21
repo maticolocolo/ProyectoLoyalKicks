@@ -14,7 +14,7 @@ import com.loyalkicksproyect.service_inventario.model.Talla;
 import com.loyalkicksproyect.service_inventario.service.InventarioService;
 
 @RestController
-@RequestMapping("/api/v1/Talla")
+@RequestMapping("/api/v1/inventario/tallas")
 public class TallaController 
 {
     @Autowired

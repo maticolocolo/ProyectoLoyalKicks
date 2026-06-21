@@ -14,7 +14,7 @@ import com.loyalkicksproyect.sevice_producto.model.Producto;
 import com.loyalkicksproyect.sevice_producto.service.ProductoService;
 
 @RestController
-@RequestMapping("/api/v1/Producto")
+@RequestMapping("/api/v1/productos")
 public class ProductoController 
 {
     @Autowired

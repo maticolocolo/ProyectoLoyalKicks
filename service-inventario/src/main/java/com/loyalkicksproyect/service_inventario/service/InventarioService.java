@@ -29,7 +29,7 @@ public class InventarioService
         {
             Object datosProducto = webClientBuilder.build()
             .get()
-            .uri("http://localhost:8081/api/v1/Producto/" + inventario.getProductoId())
+            .uri("http://localhost:8081/api/v1/productos/" + inventario.getProductoId())
             .retrieve()
             .bodyToMono(Object.class)
             .block();
@@ -92,7 +92,7 @@ public class InventarioService
             {
                 Object datosProducto = webClientBuilder.build()
                     .get()
-                    .uri("http://localhost:8081/api/v1/Producto/" + inventario.getProductoId())
+                    .uri("http://localhost:8081/api/v1/productos/" + inventario.getProductoId())
                     .retrieve()
                     .bodyToMono(Object.class)
                     .block();

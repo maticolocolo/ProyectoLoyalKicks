@@ -11,7 +11,7 @@ import com.loyalkicksproyecto.service_pedido.model.DetallePedido;
 import com.loyalkicksproyecto.service_pedido.service.PedidoService;
 
 @RestController
-@RequestMapping("/api/v1/pedido")
+@RequestMapping("/api/v1/pedidos")
 public class DetallePedidoController 
 {
     @Autowired

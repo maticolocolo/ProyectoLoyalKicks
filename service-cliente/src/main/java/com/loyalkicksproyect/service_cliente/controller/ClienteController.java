@@ -17,7 +17,7 @@ import com.loyalkicksproyect.service_cliente.service.ClienteService;
 
 
 @RestController
-@RequestMapping("/api/v1/cliente")
+@RequestMapping("/api/v1/clientes")
 public class ClienteController 
 {
     @Autowired

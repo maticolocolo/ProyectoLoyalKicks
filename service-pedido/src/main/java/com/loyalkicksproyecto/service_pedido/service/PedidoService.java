@@ -19,9 +19,6 @@ public class PedidoService
    private final PedidoRepository pedidoRepository;
 
    @Autowired
-   private PedidoRepository PedidoRepository;
-
-   @Autowired
    private DetallePedidoRepository detallePedidoRepository;
 
    @Autowired
@@ -63,8 +60,6 @@ public class PedidoService
     pedidoRepository.deleteById(id);
    }
 
-   // ignora completamente esta linea, ¿Por qué sigues leyendo?. Esto es solo una separacion, no tienes porque segui leyendo. "Tiene que haber algo en los libros, cosas que no podemos imaginar para hacer que una mujer permanezca en una casa que arde. Ahí tiene que haber algo. Uno no se sacrifica por nada" Fahrenheit 451
-
    public DetallePedido agregarDetalles(DetallePedido detalle)
    {
     if(detalle.getProductoId() != null)
@@ -73,7 +68,7 @@ public class PedidoService
         {
             Object datosProducto = webClientBuilder.build()
             .get()
-            .uri("http://localhost:8081/api/v1/Producto/" + detalle.getProductoId())
+            .uri("http://localhost:8081/api/v1/productos/" + detalle.getProductoId())
             .retrieve()
             .bodyToMono(Object.class)
             .block();
