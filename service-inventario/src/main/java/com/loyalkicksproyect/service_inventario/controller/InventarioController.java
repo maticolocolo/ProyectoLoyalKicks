@@ -31,6 +31,12 @@ public class InventarioController
         return inventarioService.obtenerInventarioCompleto(id);
     }
 
+    @GetMapping("/producto/{productoId}")
+    public List<Inventario> listarPorProducto(@PathVariable Long productoId)
+    {
+        return inventarioService.listarPorProducto(productoId);
+    }
+
     @GetMapping
     public List<Inventario> listarTodo()
     {

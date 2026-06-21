@@ -62,6 +62,11 @@ public class InventarioService
         return null;
     }
 
+    public List<Inventario> listarPorProducto(Long productoId)
+    {
+        return inventarioRepository.findByProductoId(productoId);
+    }
+
     //Metodos para Talla
 
     public Talla guardarTalla(Talla talla)

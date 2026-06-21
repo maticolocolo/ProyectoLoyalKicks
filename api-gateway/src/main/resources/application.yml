@@ -88,6 +88,84 @@ spring:
           predicates:
             - Path=/api/v1/clientes/v3/api-docs
 
+        # ── SUCURSAL ──
+        - id: service-sucursal
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/v1/sucursales/**
+          filters:
+            - AuthenticationFilter
+
+        - id: service-sucursal-docs
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/v1/sucursales/v3/api-docs
+
+        # ── PROVEEDOR ──
+        - id: service-proveedor
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/v1/proveedores/**
+          filters:
+            - AuthenticationFilter
+
+        - id: service-proveedor-docs
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/v1/proveedores/v3/api-docs
+
+        # ── PAGO ──
+        - id: service-pago
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/v1/pagos/**
+          filters:
+            - AuthenticationFilter
+
+        - id: service-pago-docs
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/v1/pagos/v3/api-docs
+
+        # ── ENVIO ──
+        - id: service-envio
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/v1/envios/**
+          filters:
+            - AuthenticationFilter
+
+        - id: service-envio-docs
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/v1/envios/v3/api-docs
+
+        # ── DEVOLUCION ──
+        - id: service-devolucion
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/v1/devoluciones/**
+          filters:
+            - AuthenticationFilter
+
+        - id: service-devolucion-docs
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/v1/devoluciones/v3/api-docs
+
+        # ── REPORTE ──
+        - id: service-reporte
+          uri: http://localhost:8091
+          predicates:
+            - Path=/api/v1/reportes/**
+          filters:
+            - AuthenticationFilter
+
+        - id: service-reporte-docs
+          uri: http://localhost:8091
+          predicates:
+            - Path=/api/v1/reportes/v3/api-docs
+
 eureka:
   client:
     register-with-eureka: false
@@ -107,6 +185,18 @@ springdoc:
         url: /api/v1/pedidos/v3/api-docs
       - name: Servicio Cliente
         url: /api/v1/clientes/v3/api-docs
+      - name: Servicio Sucursal
+        url: /api/v1/sucursales/v3/api-docs
+      - name: Servicio Proveedor
+        url: /api/v1/proveedores/v3/api-docs
+      - name: Servicio Pago
+        url: /api/v1/pagos/v3/api-docs
+      - name: Servicio Envio
+        url: /api/v1/envios/v3/api-docs
+      - name: Servicio Devolucion
+        url: /api/v1/devoluciones/v3/api-docs
+      - name: Servicio Reporte
+        url: /api/v1/reportes/v3/api-docs
 
 management:
   endpoints:
