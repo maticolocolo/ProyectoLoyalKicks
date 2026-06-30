@@ -62,25 +62,46 @@ public class PedidoService
 
    public DetallePedido agregarDetalles(DetallePedido detalle)
    {
-    if(detalle.getProductoId() != null)
-    {
-        try 
+        if(detalle.getProductoId() != null)
         {
-            Object datosProducto = webClientBuilder.build()
-            .get()
-            .uri("http://localhost:8081/api/v1/productos/" + detalle.getProductoId())
-            .retrieve()
-            .bodyToMono(Object.class)
-            .block();
-            
-            detalle.setDatosProducto(datosProducto);
-        } catch (Exception e) 
-        {
-            detalle.setDatosProducto("Producto no disponible");
+            try 
+            {
+                Object datosProducto = webClientBuilder.build()
+                .get()
+                .uri("http://localhost:8081/api/v1/productos/" + detalle.getProductoId())
+                .retrieve()
+                .bodyToMono(Object.class)
+                .block();
+                
+                detalle.setDatosProducto(datosProducto);
+            } catch (Exception e) 
+            {
+                detalle.setDatosProducto("Producto no disponible");
+            }
         }
+        
+        DetallePedido detalleGuardar = detallePedidoRepository.save(detalle);
+   
+        recalcularTotal(detalle.getPedido().getId());
+
+        return detalleGuardar;
+   
     }
-    return detallePedidoRepository.save(detalle); 
-   }
+
+    private void recalcularTotal(Long pedidoId)
+    {
+        List<DetallePedido> detalles = detallePedidoRepository.findByPedidoId(pedidoId);
+
+        Double nuevoTotal = detalles.stream()
+                            .mapToDouble(d -> d.getPrecioUn()* d.getCantidad())
+                            .sum();
+        
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+            .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+        
+        pedido.setTotal(nuevoTotal);
+        pedidoRepository.save(pedido);
+    }
 
    public List<DetallePedido> obtenerDetallePedido(Long pedidoId)
    {

@@ -21,7 +21,11 @@ public class AuthController {
     @Operation(summary = "Registrar nuevo usuario")
     @PostMapping("/registrar")
     public ResponseEntity<String> registrar(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.registrar(request));
+        try {
+            return ResponseEntity.ok(authService.registrar(request));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @Operation(summary = "Iniciar sesión y obtener token JWT")
