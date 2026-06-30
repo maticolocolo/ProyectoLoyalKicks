@@ -18,7 +18,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // login y registro: libres
+                .requestMatchers("/auth/**").permitAll() 
                 .anyRequest().authenticated()
             )
             .build();
