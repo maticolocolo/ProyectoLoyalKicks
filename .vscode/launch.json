@@ -2,55 +2,112 @@
     "configurations": [
         {
             "type": "java",
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-            "name": "Spring Boot-GatewayApplication<gateway>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.loyalkicks.gateway.GatewayApplication",
-            "projectName": "gateway",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
->>>>>>> ec91550 (cambios sobre swagger)
-            "name": "Spring Boot-ServiceInventarioApplication<service-inventario>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.loyalkicks.service_inventario.ServiceInventarioApplication",
-            "projectName": "service-inventario",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-ServiceProductoApplication<service-producto>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.loyalkicks.service_producto.ServiceProductoApplication",
-            "projectName": "service-producto",
-=======
-            "name": "Spring Boot-ApiGatewayApplication<api-gateway>",
+            "name": "API Gateway",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.loyalkicksproyect.api_gateway.ApiGatewayApplication",
             "projectName": "api-gateway",
             "args": "",
-            "envFile": "${workspaceFolder}/.env",
-            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=44771 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=api-gateway"
+            "vmArgs": "-Dspring.application.admin.enabled=true"
         },
         {
             "type": "java",
-            "name": "Spring Boot-SeviceProductoApplication<sevice-producto>",
+            "name": "Service Auth",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyakicksproyecto.service_auth.ServiceAuthApplication",
+            "projectName": "service-auth",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Producto",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.loyalkicksproyect.sevice_producto.SeviceProductoApplication",
             "projectName": "sevice-producto",
->>>>>>> 3ce6f1f (Recreacion de microservicios)
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Inventario",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyect.service_inventario.ServiceInventarioApplication",
+            "projectName": "service-inventario",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Pedido",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyecto.service_pedido.ServicePedidoApplication",
+            "projectName": "service-pedido",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Cliente",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyect.service_cliente.ServiceClienteApplication",
+            "projectName": "service-cliente",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Sucursal",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyect.service_sucursal.ServiceSucursalApplication",
+            "projectName": "service-sucursal",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Proveedor",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyect.service_proveedor.ServiceProveedorApplication",
+            "projectName": "service-proveedor",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Pago",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyect.service_pago.ServicePagoApplication",
+            "projectName": "service-pago",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Envio",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyect.service_envio.ServiceEnvioApplication",
+            "projectName": "service-envio",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Devolucion",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyect.service_devolucion.ServiceDevolucionApplication",
+            "projectName": "service-devolucion",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service Reporte",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.loyalkicksproyect.service_reporte.ServiceReporteApplication",
+            "projectName": "service-reporte",
+            "args": ""
         }
     ]
 }
