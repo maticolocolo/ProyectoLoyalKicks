@@ -30,6 +30,17 @@ public class ProductoService
         return productoRespository.save(producto);
     }
 
+    public Producto actualizarProducto(Long id, Producto datos)
+    {
+        Producto p = productoRespository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        p.setNombre_producto(datos.getNombre_producto());
+        p.setModelo(datos.getModelo());
+        p.setMarca(datos.getMarca());
+        p.setTipo(datos.getTipo());
+        return productoRespository.save(p);
+    }
+
     public void eliminarProducto(Long id)
     {
         productoRespository.deleteById(id);
