@@ -36,11 +36,12 @@ public class ClienteService
     {
         Cliente c = clienteRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-                    c.setNombre(datos.getNombre());
-                    c.setApellido(datos.getApellido());
-                    c.setTelefono(datos.getTelefono());
-                    c.setDirecion(datos.getDirecion());
-                    return clienteRepository.save(c);
+        c.setNombre(datos.getNombre());
+        c.setApellido(datos.getApellido());
+        c.setEmail(datos.getEmail());
+        c.setTelefono(datos.getTelefono());
+        c.setDirecion(datos.getDirecion());
+        return clienteRepository.save(c);
     }
 
     public void eliminarCliente(Long id)

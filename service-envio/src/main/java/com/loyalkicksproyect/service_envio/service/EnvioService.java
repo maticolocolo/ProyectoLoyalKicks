@@ -25,6 +25,7 @@ public class EnvioService
         envio.setEstado("PREPARANDO");
         envio.setFechaDespacho(LocalDate.now());
         envio.setFechaEntregaEstimada(LocalDate.now().plusDays(5));
+        envio.setNumeroSeguimiento("LK-" + System.currentTimeMillis());
         return envioRepository.save(envio);
     }
 

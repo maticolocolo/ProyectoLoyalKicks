@@ -49,20 +49,9 @@ public class AuthService
         nuevo.setCorreo(request.getCorreo());
         nuevo.setContresenia(passwordEncoder.encode(request.getContrasenia()));
 
-        if(request.getRoles() == null || request.getRoles().isEmpty())
-        {
-            Rol rolCliente = rolRepository.findByNombreRol("CLIENTE")
-                .orElseThrow(() -> new RuntimeException("Rol CLIENTE no encontrado"));
-            nuevo.getRoles().add(rolCliente);
-        } else
-        {
-            for (String nombreRol : request.getRoles())
-            {
-                Rol rol = rolRepository.findByNombreRol(nombreRol.toUpperCase())
-                    .orElseThrow(() -> new RuntimeException("Rol no encontrado: "+ nombreRol));
-                nuevo.getRoles().add(rol);
-            }
-        }
+        Rol rolCliente = rolRepository.findByNombreRol("CLIENTE")
+            .orElseThrow(() -> new RuntimeException("Rol CLIENTE no encontrado"));
+        nuevo.getRoles().add(rolCliente);
 
         usuarioRepository.save(nuevo);
         return "Usuario registrado exitosamente";
