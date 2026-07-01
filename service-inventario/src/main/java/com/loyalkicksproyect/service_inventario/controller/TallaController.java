@@ -3,6 +3,8 @@ package com.loyalkicksproyect.service_inventario.controller;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,5 +38,12 @@ public class TallaController
     public List<Talla> listarTallas()
     {
         return inventarioService.listarTallas();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarTalla(@PathVariable Long id)
+    {
+        inventarioService.deleteTalla(id);
+        return ResponseEntity.noContent().build();
     }
 }
