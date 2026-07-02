@@ -1,0 +1,139 @@
+package com.loyalkicksproyect.service_reporte.service;
+
+import com.loyalkicksproyect.service_reporte.model.PedidoResumen;
+import com.loyalkicksproyect.service_reporte.model.ReporteProducto;
+import com.loyalkicksproyect.service_reporte.model.ReporteVentas;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class ReporteServiceTest {
+
+    @Mock
+    private WebClient.Builder builder;
+
+    @Mock
+    private WebClient webClient;
+
+    @Mock
+    private WebClient.RequestHeadersUriSpec requestHeadersUriSpec;
+
+    @Mock
+    private WebClient.RequestHeadersSpec requestHeadersSpec;
+
+    @Mock
+    private WebClient.ResponseSpec responseSpec;
+
+    @InjectMocks
+    private ReporteService service;
+
+    @BeforeEach
+    void setUp() {
+
+        ReflectionTestUtils.setField(service, "webClientBuilder", builder);
+
+        when(builder.build()).thenReturn(webClient);
+        when(webClient.get()).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersSpec);
+        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
+
+    }
+
+    @Test
+    void generarReporteVentas_DebeCalcularTotales() {
+
+        PedidoResumen p1 = new PedidoResumen();
+        p1.setTotal(10000.0);
+
+        PedidoResumen p2 = new PedidoResumen();
+        p2.setTotal(20000.0);
+
+        when(responseSpec.bodyToMono(any(ParameterizedTypeReference.class)))
+                .thenReturn(Mono.just(List.of(p1, p2)));
+
+        ReporteVentas reporte = service.generarReporteVentas();
+
+        assertNotNull(reporte);
+        assertEquals(2, reporte.getCantidadPedidos());
+        assertEquals(30000.0, reporte.getTotalVendido());
+        assertEquals(15000.0, reporte.getTicketPromedio());
+
+    }
+
+    @Test
+    void generarReporteVentas_ListaVacia() {
+
+        when(responseSpec.bodyToMono(any(ParameterizedTypeReference.class)))
+                .thenReturn(Mono.just(List.of()));
+
+        ReporteVentas reporte = service.generarReporteVentas();
+
+        assertEquals(0, reporte.getCantidadPedidos());
+        assertEquals(0.0, reporte.getTotalVendido());
+        assertEquals(0.0, reporte.getTicketPromedio());
+
+    }
+
+    @Test
+    void generarReporteProducto_DebeRetornarDatos() {
+
+        when(responseSpec.bodyToMono(eq(Object.class)))
+                .thenReturn(Mono.just("Producto Nike"))
+                .thenReturn(Mono.just("Stock 25"));
+
+        ReporteProducto reporte = service.generarReporteProducto(5L);
+
+        assertNotNull(reporte);
+        assertEquals(5L, reporte.getProductoId());
+        assertEquals("Producto Nike", reporte.getDatosProducto());
+        assertEquals("Stock 25", reporte.getDatosInventario());
+
+    }
+
+    @Test
+    void generarReporteProducto_CuandoFallaProducto() {
+
+        when(responseSpec.bodyToMono(eq(Object.class)))
+                .thenThrow(new RuntimeException())
+                .thenReturn(Mono.just("Stock 20"));
+
+        ReporteProducto reporte = service.generarReporteProducto(8L);
+
+        assertEquals("Producto no disponible", reporte.getDatosProducto());
+        assertEquals("Stock 20", reporte.getDatosInventario());
+
+    }
+
+    @Test
+    void generarReporteProducto_CuandoFallaInventario() {
+
+        when(responseSpec.bodyToMono(eq(Object.class)))
+                .thenReturn(Mono.just("Adidas"))
+                .thenThrow(new RuntimeException());
+
+        ReporteProducto reporte = service.generarReporteProducto(3L);
+
+        assertEquals("Adidas", reporte.getDatosProducto());
+        assertEquals("Inventario no disponible", reporte.getDatosInventario());
+
+    }
+
+}
