@@ -1,0 +1,113 @@
+package com.loyalkicksproyect.service_envio.service;
+
+import com.loyalkicksproyect.service_envio.model.Envio;
+import com.loyalkicksproyect.service_envio.repository.EnvioRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class EnvioServiceTest {
+
+    @Mock
+    private EnvioRepository envioRepository;
+
+    @Mock
+    private WebClient.Builder webClientBuilder;
+
+    @InjectMocks
+    private EnvioService envioService;
+
+    private Envio envio;
+
+    @BeforeEach
+    void setUp() {
+
+        envio = new Envio();
+
+        envio.setId(1L);
+        envio.setPedidoId(10L);
+        envio.setSucursalOrigenId(5L);
+        envio.setEstado("PENDIENTE");
+    }
+
+    @Test
+    void crearEnvio_DeberiaAsignarValoresIniciales() {
+
+        // Given
+        when(envioRepository.save(any(Envio.class)))
+                .thenAnswer(i -> i.getArgument(0));
+
+        // When
+        Envio resultado = envioService.crearEnvio(envio);
+
+        // Then
+        assertEquals("PREPARANDO", resultado.getEstado());
+        assertEquals(LocalDate.now(), resultado.getFechaDespacho());
+        assertEquals(LocalDate.now().plusDays(5), resultado.getFechaEntregaEstimada());
+
+        verify(envioRepository).save(any(Envio.class));
+    }
+
+    @Test
+    void listarTodo_DeberiaRetornarLista() {
+
+        when(envioRepository.findAll())
+                .thenReturn(Arrays.asList(envio));
+
+        assertEquals(1, envioService.listarTodo().size());
+
+        verify(envioRepository).findAll();
+    }
+
+    @Test
+    void buscarPorId_NoExiste() {
+
+        when(envioRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        Optional<Envio> resultado = envioService.buscarPorId(1L);
+
+        assertTrue(resultado.isEmpty());
+    }
+
+    @Test
+    void cambiarEstado_DeberiaActualizarEstado() {
+
+        when(envioRepository.findById(1L))
+                .thenReturn(Optional.of(envio));
+
+        when(envioRepository.save(any()))
+                .thenAnswer(i -> i.getArgument(0));
+
+        Envio actualizado = envioService.cambiarEstado(1L, "EN CAMINO");
+
+        assertEquals("EN CAMINO", actualizado.getEstado());
+
+        verify(envioRepository).save(any());
+    }
+
+    @Test
+    void cambiarEstado_NoExiste_DebeLanzarExcepcion() {
+
+        when(envioRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class,
+                () -> envioService.cambiarEstado(1L, "ENTREGADO"));
+    }
+
+}
