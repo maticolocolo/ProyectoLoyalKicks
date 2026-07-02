@@ -1,19 +1,123 @@
-## Ingrentes
- - Mateo Debrott
- - Matias Herrera
+#LoyalKicks - Arquitectura de Microservicios
 
-## MicroServicios
- - Cliente
- - Producto
- - Inventario
- - Pago
- - Reporte
- - Sucursal
- - Devolucion
- - Envio
- - Pedido
- - Proveedor
+## Descripción del Proyecto
 
-## Api Gateway
-## Swagger
-##
+LoyalKicks es una plataforma orientada a la gestión de una tienda de zapatillas, desarrollada bajo una arquitectura basada en microservicios utilizando Spring Boot. El sistema permite administrar las diferentes áreas del negocio mediante servicios independientes que se comunican entre sí a través de una API Gateway, facilitando la escalabilidad, el mantenimiento y la separación de responsabilidades.
+Cada microservicio implementa el patrón **Controller – Service – Repository (CSR)** y expone una API REST documentada mediante Swagger/OpenAPI.
+----------------------------------------------------------
+# Integrantes
+
+* <Mateo Debrott>
+* <Matias Herrera>
+----------------------------------------------------------
+# Tecnologías utilizadas
+
+* Java 21
+* Spring Boot
+* Spring Web
+* Spring Data JPA
+* Spring Cloud Gateway
+* Springdoc OpenAPI (Swagger)
+* JUnit 5
+* Mockito
+* Maven
+* MySQL
+* Git y GitHub
+
+----------------------------------------------------------
+# Microservicios implementados
+
+* API Gateway
+* Servicio Usuarios
+* Servicio Clientes
+* Servicio Productos
+* Servicio Categorías
+* Servicio Marcas
+* Servicio Inventario
+* Servicio Ventas
+* Servicio Detalle Venta
+* Servicio Proveedores
+* Servicio Pagos
+* Servicio Envíos
+> La arquitectura está compuesta por 11 microservicios independientes conectados mediante API Gateway.
+----------------------------------------------------------
+
+# API Gateway
+
+Todas las solicitudes ingresan a través del Gateway.
+
+Ejemplo de rutas:
+
+```
+/api/usuarios/**
+/api/clientes/**
+/api/productos/**
+/api/categorias/**
+/api/marcas/**
+/api/inventario/**
+/api/ventas/**
+/api/detalleventas/**
+/api/proveedores/**
+/api/pagos/**
+/api/envios/**
+```
+
+----------------------------------------------------------
+
+# Pruebas Unitarias
+
+El proyecto incorpora pruebas unitarias desarrolladas con JUnit 5 y Mockito para validar la lógica de negocio de los microservicios.
+
+Las pruebas incluyen:
+
+* Validación de reglas de negocio.
+* Simulación de repositorios mediante Mockito.
+* Uso de asserts.
+* Estructura Given – When – Then.
+----------------------------------------------------------
+
+# Estructura del Proyecto
+
+```
+src
+ ├── controller
+ ├── service
+ ├── repository
+ ├── model
+ ├── dto
+ ├── config
+ └── test
+```
+
+----------------------------------------------------------
+
+# Ejecución del Proyecto
+
+## Requisitos
+
+* Java 21
+* Maven
+* MySQL
+* IntelliJ IDEA o Visual Studio Code
+----------------------------------------------------------
+
+# Arquitectura
+
+La solución implementa una arquitectura distribuida basada en microservicios donde cada servicio posee:
+
+* Responsabilidad única.
+* Base de datos independiente (cuando aplica).
+* API REST.
+* Documentación Swagger.
+* Configuración mediante archivos YAML.
+* Pruebas unitarias.
+
+La comunicación entre servicios se realiza mediante peticiones REST centralizadas a través del API Gateway.
+
+----------------------------------------------------------
+
+# Control de Versiones
+
+El desarrollo fue gestionado utilizando GitHub mediante commits progresivos y descriptivos, permitiendo mantener un historial claro de cambios durante todo el proyecto.
+
+----------------------------------------------------------
