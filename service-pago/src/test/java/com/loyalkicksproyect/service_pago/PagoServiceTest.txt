@@ -1,0 +1,146 @@
+package com.loyalkicksproyect.service_pago.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
+
+import com.loyalkicksproyect.service_pago.model.Pago;
+import com.loyalkicksproyect.service_pago.repository.PagoRepository;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import org.springframework.web.reactive.function.client.WebClient;
+
+@ExtendWith(MockitoExtension.class)
+class PagoServiceTest {
+
+    @Mock
+    private PagoRepository pagoRepository;
+
+    @Mock
+    private WebClient.Builder webClientBuilder;
+
+    @InjectMocks
+    private PagoService pagoService;
+
+    private Pago pago;
+
+    @BeforeEach
+    void setUp() {
+
+        pago = new Pago();
+        pago.setId(1L);
+        pago.setPedidoId(10L);
+        pago.setEstado("APROBADO");
+    }
+
+    @Test
+    void listarTodo_DebeRetornarLista() {
+
+        // Given
+        when(pagoRepository.findAll())
+                .thenReturn(Arrays.asList(pago));
+
+        // When
+        var lista = pagoService.listarTodo();
+
+        // Then
+        assertEquals(1, lista.size());
+
+        verify(pagoRepository).findAll();
+    }
+
+    @Test
+    void listarTodo_ListaVacia() {
+
+        when(pagoRepository.findAll())
+                .thenReturn(Collections.emptyList());
+
+        var lista = pagoService.listarTodo();
+
+        assertTrue(lista.isEmpty());
+
+        verify(pagoRepository).findAll();
+    }
+
+    @Test
+    void listarPorPedido_DebeRetornarPagos() {
+
+        when(pagoRepository.findByPedidoId(10L))
+                .thenReturn(Arrays.asList(pago));
+
+        var lista = pagoService.listarPorPedido(10L);
+
+        assertEquals(1, lista.size());
+        assertEquals(10L, lista.get(0).getPedidoId());
+
+        verify(pagoRepository).findByPedidoId(10L);
+    }
+
+    @Test
+    void listarPorPedido_ListaVacia() {
+
+        when(pagoRepository.findByPedidoId(20L))
+                .thenReturn(Collections.emptyList());
+
+        var lista = pagoService.listarPorPedido(20L);
+
+        assertTrue(lista.isEmpty());
+
+        verify(pagoRepository).findByPedidoId(20L);
+    }
+
+    @Test
+    void anularPago_DebeCambiarEstado() {
+
+        // Given
+        when(pagoRepository.findById(1L))
+                .thenReturn(Optional.of(pago));
+
+        when(pagoRepository.save(any(Pago.class)))
+                .thenReturn(pago);
+
+        // When
+        Pago resultado = pagoService.anularPago(1L);
+
+        // Then
+        assertEquals("ANULADO", resultado.getEstado());
+
+        verify(pagoRepository).findById(1L);
+        verify(pagoRepository).save(any(Pago.class));
+    }
+
+    @Test
+    void anularPago_DebeLanzarExcepcion() {
+
+        when(pagoRepository.findById(50L))
+                .thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class,
+                () -> pagoService.anularPago(50L));
+
+        verify(pagoRepository).findById(50L);
+    }
+
+    @Test
+    void buscarPorId_NoExiste() {
+
+        when(pagoRepository.findById(100L))
+                .thenReturn(Optional.empty());
+
+        Optional<Pago> resultado = pagoService.buscarPorId(100L);
+
+        assertFalse(resultado.isPresent());
+
+        verify(pagoRepository).findById(100L);
+    }
+}
