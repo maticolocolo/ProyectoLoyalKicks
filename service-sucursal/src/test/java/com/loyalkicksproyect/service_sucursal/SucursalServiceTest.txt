@@ -1,0 +1,158 @@
+package com.loyalkicksproyect.service_sucursal.service;
+
+import com.loyalkicksproyect.service_sucursal.model.Sucursal;
+import com.loyalkicksproyect.service_sucursal.repository.SucursalRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class SucursalServiceTest {
+
+    @Mock
+    private SucursalRepository repository;
+
+    @InjectMocks
+    private SucursalService service;
+
+    private Sucursal sucursal;
+
+    @BeforeEach
+    void setUp() {
+        sucursal = new Sucursal(
+                1L,
+                "Sucursal Centro",
+                "Av. Siempre Viva 123",
+                "Santiago",
+                "987654321",
+                true
+        );
+    }
+
+    @Test
+    void agregarSucursal_DeberiaGuardarSucursal() {
+
+        // Given
+        when(repository.save(any(Sucursal.class))).thenReturn(sucursal);
+
+        // When
+        Sucursal resultado = service.agregarSucursal(sucursal);
+
+        // Then
+        assertNotNull(resultado);
+        assertEquals("Sucursal Centro", resultado.getNombre());
+        verify(repository).save(any(Sucursal.class));
+    }
+
+    @Test
+    void agregarSucursal_ActivaNull_DebeAsignarTrue() {
+
+        // Given
+        sucursal.setActiva(null);
+
+        when(repository.save(any(Sucursal.class)))
+                .thenAnswer(i -> i.getArgument(0));
+
+        // When
+        Sucursal resultado = service.agregarSucursal(sucursal);
+
+        // Then
+        assertTrue(resultado.getActiva());
+        verify(repository).save(any(Sucursal.class));
+    }
+
+    @Test
+    void listarTodo_DeberiaRetornarLista() {
+
+        // Given
+        when(repository.findAll())
+                .thenReturn(Arrays.asList(sucursal));
+
+        // When
+        List<Sucursal> lista = service.listarTodo();
+
+        // Then
+        assertEquals(1, lista.size());
+        verify(repository).findAll();
+    }
+
+    @Test
+    void buscarPorId_Existe() {
+
+        // Given
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(sucursal));
+
+        // When
+        Optional<Sucursal> resultado = service.buscarPorId(1L);
+
+        // Then
+        assertTrue(resultado.isPresent());
+        assertEquals("Sucursal Centro", resultado.get().getNombre());
+    }
+
+    @Test
+    void actualizarSucursal_DeberiaActualizarDatos() {
+
+        // Given
+        Sucursal nuevos = new Sucursal(
+                null,
+                "Sucursal Norte",
+                "Nueva Dirección",
+                "Maipú",
+                "111111111",
+                false
+        );
+
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(sucursal));
+
+        when(repository.save(any(Sucursal.class)))
+                .thenAnswer(i -> i.getArgument(0));
+
+        // When
+        Sucursal resultado = service.actualizarSucursal(1L, nuevos);
+
+        // Then
+        assertEquals("Sucursal Norte", resultado.getNombre());
+        assertEquals("Nueva Dirección", resultado.getDireccion());
+        assertEquals("Maipú", resultado.getComuna());
+        assertFalse(resultado.getActiva());
+
+        verify(repository).save(any(Sucursal.class));
+    }
+
+    @Test
+    void actualizarSucursal_NoExiste_DebeLanzarExcepcion() {
+
+        // Given
+        when(repository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        // Then
+        assertThrows(RuntimeException.class,
+                () -> service.actualizarSucursal(1L, sucursal));
+    }
+
+    @Test
+    void eliminarSucursal_DeberiaEliminar() {
+
+        // When
+        service.eliminarSucursal(1L);
+
+        // Then
+        verify(repository).deleteById(1L);
+    }
+
+}
