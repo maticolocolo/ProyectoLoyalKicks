@@ -1,0 +1,117 @@
+package com.loyalkicksproyect.service_cliente.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import com.loyalkicksproyect.service_cliente.model.Cliente;
+import com.loyalkicksproyect.service_cliente.repository.ClienteRepository;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+class ClienteServiceTest {
+
+    @Mock
+    private ClienteRepository clienteRepository;
+
+    @InjectMocks
+    private ClienteService clienteService;
+
+    @Test
+    void agregarClienteTest() {
+
+        Cliente cliente = new Cliente();
+        cliente.setNombre("Matias");
+        cliente.setApellido("Herrera");
+
+        when(clienteRepository.save(any(Cliente.class)))
+                .thenReturn(cliente);
+
+        Cliente resultado = clienteService.agregarCliente(cliente);
+
+        assertNotNull(resultado);
+        assertEquals("Matias", resultado.getNombre());
+
+        verify(clienteRepository).save(any(Cliente.class));
+    }
+
+    @Test
+    void listarTodoTest() {
+
+        Cliente c1 = new Cliente();
+        Cliente c2 = new Cliente();
+
+        when(clienteRepository.findAll())
+                .thenReturn(Arrays.asList(c1, c2));
+
+        List<Cliente> lista = clienteService.listarTodo();
+
+        assertEquals(2, lista.size());
+
+        verify(clienteRepository).findAll();
+    }
+
+    @Test
+    void buscarPorIdTest() {
+
+        Cliente cliente = new Cliente();
+        cliente.setId(1L);
+
+        when(clienteRepository.findById(1L))
+                .thenReturn(Optional.of(cliente));
+
+        Optional<Cliente> resultado = clienteService.buscarPorId(1L);
+
+        assertTrue(resultado.isPresent());
+        assertEquals(1L, resultado.get().getId());
+
+        verify(clienteRepository).findById(1L);
+    }
+
+    @Test
+    void actualizarClienteTest() {
+
+        Cliente existente = new Cliente();
+        existente.setId(1L);
+        existente.setNombre("Juan");
+
+        Cliente actualizado = new Cliente();
+        actualizado.setNombre("Pedro");
+        actualizado.setApellido("Gomez");
+        actualizado.setTelefono("123456789");
+        actualizado.setDirecion("Santiago");
+
+        when(clienteRepository.findById(1L))
+                .thenReturn(Optional.of(existente));
+
+        when(clienteRepository.save(any(Cliente.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Cliente resultado = clienteService.actualizarCliente(1L, actualizado);
+
+        assertEquals("Pedro", resultado.getNombre());
+        assertEquals("Gomez", resultado.getApellido());
+
+        verify(clienteRepository).findById(1L);
+        verify(clienteRepository).save(any(Cliente.class));
+    }
+
+    @Test
+    void eliminarClienteTest() {
+
+        doNothing().when(clienteRepository).deleteById(1L);
+
+        clienteService.eliminarCliente(1L);
+
+        verify(clienteRepository).deleteById(1L);
+    }
+
+}
